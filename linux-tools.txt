@@ -1,4 +1,7 @@
 apt-get install screenfetch
 
 #git clone https://github.com/theonewolf/TermRecord.git
-# OR pip install TermRecord
+pip install TermRecord
+
+autojump
+(cd /tmp && git clone --depth 1 https://github.com/twolfson/sexy-bash-prompt && cd sexy-bash-prompt && make install) && source ~/.bashrc
