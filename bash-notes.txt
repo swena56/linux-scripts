@@ -1,0 +1,5 @@
+#for loop
+
+#Defining Variables
+#-equals sign needs to be right next to the variable
+MYVAR= "value"

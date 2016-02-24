@@ -1,0 +1,4 @@
+apt-get install screenfetch
+
+#git clone https://github.com/theonewolf/TermRecord.git
+# OR pip install TermRecord
