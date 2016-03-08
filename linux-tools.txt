@@ -4,4 +4,27 @@ apt-get install screenfetch
 pip install TermRecord
 
 autojump
+
+#which git prompt is better
 (cd /tmp && git clone --depth 1 https://github.com/twolfson/sexy-bash-prompt && cd sexy-bash-prompt && make install) && source ~/.bashrc
+git clone git://github.com/rtomayko/git-sh.git
+
+# apt-get install httpie  OR  git clone https://github.com/jkbrzt/httpie
+# needs python-request
+# http -a admin 10.0.0.1
+
+#useful function
+function httpless {
+    # `httpless example.org'
+    http --pretty=all --print=hb "$@" | less -R;
+}
+
+
+
+apt-get install cmus #audio player
+
+https://github.com/nogizhopaboroda/iponmap
+https://github.com/yaronn/blessed-contrib
+apt-get install npm
+npm install blessed blessed-contrib
+npm install -g iponmap
