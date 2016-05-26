@@ -1,0 +1,11 @@
+#setup postgres on linux
+# postgres uses port 5432
+
+sudo apt-get install postgres
+
+sudo su -u postgres
+createuser
+
+#ALTER USER 
+
+psql
