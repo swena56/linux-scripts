@@ -1,0 +1,19 @@
+Compressing files
+ 
+Syntax	Description	Example(s)
+gzip {filename}	Gzip compress the size of the given files using Lempel-Ziv coding (LZ77). Whenever possible, each file is replaced by one with the extension .gz.	gzip mydata.doc
+gzip *.jpg
+ls -l
+bzip2 {filename}	bzip2 compresses files using the Burrows-Wheeler block sorting text compression algorithm, and Huffman coding. Compression is generally considerably better than that achieved by bzip command (LZ77/LZ78-based compressors). Whenever possible, each file is replaced by one with the extension .bz2.	bzip2 mydata.doc
+bzip2 *.jpg
+ls -l
+zip {.zip-filename} {filename-to-compress}	zip is a compression and file packaging utility for Unix/Linux. Each file is stored in single .zip {.zip-filename} file with the extension .zip.	zip mydata.zip mydata.doc
+zip data.zip *.doc
+ls -l
+tar -zcvf {.tgz-file} {files}
+tar -jcvf {.tbz2-file} {files}	The GNU tar is archiving utility but it can be use to compressing large file(s). GNU tar supports both archive compressing through gzip and bzip2. If you have more than 2 files then it is recommended to use tar instead of gzip or bzip2.
+-z: use gzip compress
+-j: use bzip2 compress	tar -zcvf data.tgz *.doc
+tar -zcvf pics.tar.gz *.jpg *.png
+tar -jcvf data.tbz2 *.doc
+ls -l

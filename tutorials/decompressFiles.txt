@@ -1,0 +1,15 @@
+Decompressing files
+ 
+Syntax	Description	Example(s)
+gzip -d {.gz file}
+gunzip {.gz file}	Decompressed a file that is created using gzip command. File is restored to their original form using this command.	gzip -d mydata.doc.gz
+gunzip mydata.doc.gz
+bzip2 -d {.bz2-file}
+bunzip2 {.bz2-file}	Decompressed a file that is created using bzip2 command. File is restored to their original form using this command.	bzip2 -d mydata.doc.bz2
+gunzip mydata.doc.bz2
+unzip {.zip file}	Extract compressed files in a ZIP archive.	unzip file.zip
+unzip data.zip resume.doc
+tar -zxvf {.tgz-file}
+tar -jxvf {.tbz2-file}	Untar or decompressed a file(s) that is created using tar compressing through gzip and bzip2 filter	tar -zxvf data.tgz 
+tar -zxvf pics.tar.gz *.jpg
+tar -jxvf data.tbz2
