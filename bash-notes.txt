@@ -3,3 +3,6 @@
 #Defining Variables
 #-equals sign needs to be right next to the variable
 MYVAR= "value"
+
+#add to path -> consider adding this to ~/.bashrc
+export PATH=$PATH:/directory/I/Want/To/Add/To/My/Path
