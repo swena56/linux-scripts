@@ -18,7 +18,6 @@ while( $not_done ){
         $sys_info = get_system_info();
         print $sys_info->{log};
 
-        print "\n[+] Install Docker as Swarm ( client or manager )?\n";
         print "\n  1) Install Docker ";
         print "\n  2) Install Docker tab-complete [ unimplemented ] ";
         # start and stop docker
@@ -32,19 +31,25 @@ while( $not_done ){
         print "\n\nSelection: ";
 
         my $input = <STDIN>;
+	
+
+	if( !$sys_info->{is_docker_installed} ) {
+                install_docker();
+	}
 
         if ( $input == "1" ){
-
+		
                 install_docker();
+
                 $not_done = 1;
 
         } elsif ( $input == "2" ) {
-
+		install_docker_tab_complete();
                 $not_done = 0;
         } elsif ( $input == "3" ) {
                 learn_docker();
-        } elsif ( $input == "q" ) {
-
+        } elsif ( $input == "q" || $input == "0" ) {
+		$not_done = 0;
         } else {
 
         }
@@ -52,7 +57,7 @@ while( $not_done ){
 
 }
 
-print "\nDone";
+print "\nDone\n";
 
 #################### functions ####################
 
@@ -65,6 +70,8 @@ sub get_system_info {
         my $arch = `uname -m`;
         my $docker_loc = `which docker`;
         my $docker_installed = ( $docker_loc =~ m/docker/ ) ? 1 : 0;
+	my $last_run_container = `docker ps -l -q`;
+	#docker ps -l -q
 
         ## needs dig
         my $public_ip = `dig +short myip.opendns.com \@resolver1.opendns.com`;
@@ -74,6 +81,8 @@ sub get_system_info {
         $output .= "\n   - OS: $OS ";
         $output .= "  - Arch: $arch";
         $output .= "   - Public IP: $public_ip";
+	
+	#is tab complete installed?
 
         if( $docker_installed ){
 
@@ -95,11 +104,10 @@ sub get_system_info {
         ## Is docker-machine installed?
         if( `which docker-machine` =~ m/docker-machine/ ){
 
-                #$output .= "\n   - docker-machine: ";
-                print "docker-machine installed";
+                $output .= "   - docker-machine: " . `which docker-machine`;
         }
 
-        return { log => $output, OS => $OS, arch => $arch };
+        return { log => $output, OS => $OS, arch => $arch, is_docker_installed => $docker_installed };
 }
 
 sub install_docker {
@@ -117,14 +125,12 @@ sub install_docker {
         }
         ## check if we need sudo, inform the user to run this as sudo
 
-
-        my $extras = `apt-get install -y linux-image-extra-\$(uname -r) linux-image-extra-virtual curl virtualbox`;
+        my $extras = `apt-get install -y linux-image-extra-\$(uname -r) linux-image-extra-virtual curl virtualbox python-pip`;
         ## TODO low - check if successful
-        ## unable to locate docker-engine?
         print $extras;
-
-        my $docker_engine = `apt-get install -y docker-engine`;
-        print $docker_engine;
+	`pip install docker-compose`;
+        #my $docker_engine = `apt-get install -y docker-engine`;
+        #print $docker_engine;
 
         ## add ssl parameter to curl TODO
         my $docker_curl = `curl https://get.docker.com/ | sh;`;
@@ -134,18 +140,23 @@ sub install_docker {
            my $run = `sudo dpkg --configure -a`;
            print $run;
         }
+	#sudo modprobe aufs
+	# /var/lib/docker/aufs might need to be removed
+	# may need to reboot after this
 
         #print `apt-cache policy docker-engine`;
         #print `apt-get install docker-engine`;
-
-
+	print "Adding tab complete for docker";
+	print `curl -L https://raw.githubusercontent.com/docker/compose/\$(docker-compose version --short)/contrib/completion/bash/docker-compose > /etc/bash_completion.d/docker-compose`;
         ## add user
         print `sudo usermod -aG docker \$USER`;
 
+	install_additional_tools();
         ## failed
 
         ## Install docker-machine
-
+	print `sudo groupadd docker`;
+	print `sudo usermod -aG docker \$USER`;
         ## create docker local VM
         #`docker-machine create -d virtualbox docker-local-vm`;
         #`eval "$(docker-machine env docker-local-vm)”`
@@ -184,6 +195,22 @@ sub install_dependencies {
         ## install virtualbox
 }
 
+sub install_docker_tab_complete {
+	print "Adding tab complete for docker";
+       my $instal =  `curl -L https://raw.githubusercontent.com/docker/compose/\$(docker-compose version --short)/contrib/completion/bash/docker-compose > /etc/bash_completion.d/docker-compose`;
+	print $instal;
+`wget https://raw.githubusercontent.com/docker/docker/master/contrib/completion/bash/docker -O ~/.docker-completion.sh`;
+`wget https://raw.githubusercontent.com/docker/compose/$(docker-compose --version | awk 'NR==1{print \$NF}')/contrib/completion/bash/docker-compose -O ~/.docker-compose-completion.sh`;
+`wget https://raw.githubusercontent.com/docker/machine/master/contrib/completion/bash/docker-machine.bash -O ~/.docker-machine-completion.sh`;
+
+`. ~/.docker-completion.sh`;
+`. ~/.docker-machine-completion.sh`;
+`. ~/.docker-compose-completion.sh`;
+## add to bash_profile
+#source ~/.bash_rc
+
+}
+
 sub install_additional_tools {
 
         ## ranger htop virtualbox
@@ -200,6 +227,18 @@ sub install_additional_tools {
                 print `ls -lr /usr/local/bin/docker-machine`;
                 print `docker-machine version`;
         }
+}
+
+sub docker_on_osx {
+
+	`brew install boot2docker`;
+	`boot2docker init`;
+	`boot2docker up`;
+	#brew install python
+	#brew install libyaml
+	#pip install shyaml
+
+
 }
 
 =pod
@@ -231,6 +270,34 @@ sub install_additional_tools {
 	sudo docker daemon
 	apt-get install docker.io 
         
+	docker run -d ubuntu /bin/sh -c "while true; do echo hello world; sleep 1; done"
+	docker stop `dl`
+	docker start `dl`
+	docker restart `dl`
+	docker attach `dl`
+	docker rm `dl`
+	docker ps
+	docker inspect `dl`
+	docker top `dl`
+
+	Port forwarding example from localhost:8080 to port 80 inside boot2docker-vm:
+
+	VBoxManage controlvm boot2docker-vm natpf1 "web,tcp,127.0.0.1,8080,,80"
+	When all is ready clone this git repository:
+
+	git clone https://github.com/komljen/dockerfile-examples.git && cd dockerfile-examples
+
+	#docker hashcat
+	hihouhou/hashcat
+ 
+	linking a mysql sever to a docker container
+
+# install on ubuntu 14.04
+wget -qO- https://get.docker.io/gpg | apt-key add -
+echo "deb http://get.docker.io/ubuntu docker main" > /etc/apt/sources.list.d/docker.list
+apt-get update
+apt-get -y install lxc-docker
+
 	=head RESOURCES
                 https://www.docker.com/products/docker-swarm#/overview
                 https://www.upcloud.com/support/how-to-configure-docker-swarm/
