@@ -48,6 +48,11 @@ while( $not_done ){
                 $not_done = 0;
         } elsif ( $input == "3" ) {
                 learn_docker();
+	} elsif ( $input == "4" ) {
+		my $ip = $sys_info->{ip};
+		my $results = `docker swarm init --advertise-addr $ip`;
+		print $results;
+		my $wait = <STDIN>;
         } elsif ( $input == "q" || $input == "0" ) {
 		$not_done = 0;
         } else {
@@ -107,7 +112,7 @@ sub get_system_info {
                 $output .= "   - docker-machine: " . `which docker-machine`;
         }
 
-        return { log => $output, OS => $OS, arch => $arch, is_docker_installed => $docker_installed };
+        return { log => $output, OS => $OS, arch => $arch, ip => $public_ip, is_docker_installed => $docker_installed };
 }
 
 sub install_docker {

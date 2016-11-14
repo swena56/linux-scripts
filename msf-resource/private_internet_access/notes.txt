@@ -1,0 +1,55 @@
+The explanations of how to access PIA VPN elsewhere on this forum are great, especially here (including lots more useful information in the comments).  However, they don't contain quite all the pieces to run a headless server that sets up a VPN at boot, so I'm including some extra hints.  This is tested on Debian.
+
+Install openvpn as per WinstonSmith's instructions for the command line.  You can now start and stop the VPN manually, entering your PIA username and password each time.
+
+Next step is to connect without providing credentials interactively.  To do this, edit the .ovpn file you are using to connect.  Change the line
+
+auth-users-pass
+
+to
+
+auth-users-pass .secrets
+
+then create a text file in the same directory called .secrets and in it place your username and password on the first and second lines respectively.  Make sure you protect this information from other users on your system with
+
+chmod 600 .secrets
+
+Now, if you run the command as before, eg
+
+openvpn 'US New York.ovpn'
+
+then it should connect without asking you anything.
+
+Lastly, to run this at boot time, openvpn needs to be run from a script along the lines of this:
+
+#!/bin/sh
+
+exec 1>/var/log/vpn 2>&1
+
+case "$1" in
+  start)
+    echo "Connecting to PIA VPN "
+    /usr/sbin/openvpn --config /path/to/config.ovpn &
+    ;;
+  stop)
+    echo "Closing connection to PIA VPN "
+    killall openvpn
+    ;;
+  *)
+    echo "Usage: /etc/init.d/vpn {start|stop}"
+    exit 1
+    ;;
+esac
+
+exit 0
+
+Fill in the red fields for your system.  If you (as root) place this script in /etc/init.d/ (for Slackware check out /etc/rc.d/) and then run
+
+update-rc.d vpn defaults
+
+then this will be added to your boot sequence.  (This command is Debian specific.)
+
+At this point you also have to fully specify the paths in your .opvn file as it is now being run from a script without context.
+
+The script logs to /var/log/vpn
+
