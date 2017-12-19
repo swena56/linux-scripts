@@ -24,7 +24,7 @@ composer require brandonwamboldt/utilphp
 MYSQL_ROOT_PASSWORD="$(sudo cat /root/.my.cnf | grep password | cut -d "=" -f 2)"
 
 sudo sed -i -e "s/DB_DATABASE=homestead/DB_DATABASE=$PROJECT_NAME/g" "$HOME/$PROJECT_NAME/.env"
-sudo sed -i -e "s/DB_USERNAME=homestead/DB_USERNAME=$USER/g" "$HOME/$PROJECT_NAME/.env"
+sudo sed -i -e "s/DB_USERNAME=homestead/DB_USERNAME=root/g" "$HOME/$PROJECT_NAME/.env"
 sudo sed -i -e "s/DB_PASSWORD=secret/DB_PASSWORD=$MYSQL_ROOT_PASSWORD/g" "$HOME/$PROJECT_NAME/.env"
 
 php artisan make:auth

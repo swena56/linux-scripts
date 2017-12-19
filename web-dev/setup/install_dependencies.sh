@@ -82,6 +82,9 @@ EOL
 
   mysql --password=$MYSQL_ROOT_PASSWORD --user=root -e "CREATE DATABASE $1"
 
+  mkdir -p /var/run/mysqld
+  chown mysql:mysql /var/run/mysqld
+
 fi
 
 # install sublime

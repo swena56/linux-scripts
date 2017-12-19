@@ -1,5 +1,7 @@
 ###################  Configure Apache ####################
 
+## not currently working
+
 ## check if has first parameter
 if [ -z "$1" ]
 then
@@ -146,8 +148,9 @@ echo
 cat $domain.key
 
 echo
+IP="$(ifconfig | grep "inet addr:" | grep -v 127.0.0.1 | sed -e 's/Bcast//' | cut -d: -f2)"
 #IP="$(ip -4 addr show eth1 | grep -oP "(?<=inet ).*(?=/)")"
-#echo "Webserver running on: http://$IP"
+echo "Webserver running on: http://$IP"
 
 sudo /etc/init.d/apache2 restart
 sudo update-rc.d apache2 defaults
