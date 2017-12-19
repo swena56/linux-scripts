@@ -19,6 +19,8 @@ composer create-project --prefer-dist laravel/laravel $PROJECT_NAME
 cd $HOME/$PROJECT_NAME/
 
 composer require brandonwamboldt/utilphp
+composer require behat/mink
+composer require behat/mink-selenium2-driver
 
 # set .env default password
 MYSQL_ROOT_PASSWORD="$(sudo cat /root/.my.cnf | grep password | cut -d "=" -f 2)"

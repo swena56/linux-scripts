@@ -12,10 +12,10 @@ fi
 
 PROJECT_NAME="WebDev"
 
-screen -X -S selenium kill
-screen -dmS selenium bash -c "cd ~/$PROJECT_NAME; php artisan serve --host=0.0.0.0; exec bash;"
 screen -X -S serve kill
-screen -dmS serve bash -c "cd ~/; java -jar selenium-server-standalone-3.8.1.jar; exec bash;"
+screen -dmS serve bash -c "cd ~/$PROJECT_NAME; php artisan serve --host=0.0.0.0; exec bash;"
+screen -X -S selenium kill
+screen -dmS selenium bash -c "cd ~/; java -jar selenium-server-standalone-3.8.1.jar; exec bash;"
 
 
 sleep 4
