@@ -32,4 +32,6 @@ $result = curl_exec ($ch);
 echo $result;  
 curl_close($ch);
 
+//requires a document length
+
 ?>
