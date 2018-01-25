@@ -1,0 +1,11 @@
+#!/bin/sh
+
+case $1 in
+     start)
+        su - root -c "screen -dmS test bash -c 'echo waiting 5 senconds...; sleep 5; exec bash'"
+       ;;
+     stop)
+        killall screen
+        ;;
+esac
+exit 0
