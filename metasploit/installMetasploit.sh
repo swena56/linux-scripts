@@ -1,6 +1,10 @@
 sudo apt-get update
 sudo apt-get upgrade
 
+sudo apt-get install metasploit-framework -y
+
+exit
+
 #will install metasploit
 sudo apt-get install libpq-dev \
          gnupg2 \

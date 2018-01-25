@@ -1,0 +1,7 @@
+exploit/windows/fileformat/office_ms17_11882
+
+exploit/windows/http/disk_pulse_enterprise_get
+
+exploit/linux/http/dlink_dir850l_unauth_exec
+
+

