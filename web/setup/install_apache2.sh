@@ -154,3 +154,5 @@ echo "Webserver running on: http://$IP"
 
 sudo /etc/init.d/apache2 restart
 sudo update-rc.d apache2 defaults
+
+journalctl -xe
