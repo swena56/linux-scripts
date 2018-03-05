@@ -1,10 +1,14 @@
 ###################  Configure Apache ####################
 
-## not currently working
+## uses a project folder in the home directory for param 1
 
 ## check if has first parameter
 if [ -z "$1" ]
 then
+     if [ ! -d "$1" ]; then
+	echo "[!] Domain project directory does not exist"
+	exit
+     fi
      echo "[+] Parameter 1 is empty, domain name"
      exit
 else
@@ -32,15 +36,18 @@ apachectl -V
 SERVER_ADMIN="admin@site.com"
 SERVER_NAME="localhost"
 DOCUMENT_ROOT="/var/www/html"
-DOMAIN_NAME="domain_name"
+DOMAIN_NAME="$1"
 APACHE_CONF="/etc/apache2/sites-available/$1.conf"
+
+
+if [ ! -f "$APACHE_CONF" ]; then
 
 # write the apache conf file
 rm $APACHE_CONF;
 touch $APACHE_CONF;
 echo "<Virtualhost *:80>" > $APACHE_CONF;
 echo "   ServerAdmin $SERVER_ADMIN" >> $APACHE_CONF;
-echo "   DocumentRoot $DOCUMENT_ROOT/public" >> $APACHE_CONF;
+echo "   DocumentRoot $DOCUMENT_ROOT/$DOMAIN_NAME" >> $APACHE_CONF;
 echo "   ServerName $SERVER_NAME" >> $APACHE_CONF;
 echo "   <directory \"$DOCUMENT_ROOT\">" >> $APACHE_CONF;
 echo "      AllowOverride All" >> $APACHE_CONF;
@@ -53,7 +60,7 @@ echo "</Virtualhost>" >> $APACHE_CONF;
 echo "" >> $APACHE_CONF;
 echo "<Virtualhost *:443>" >> $APACHE_CONF;
 echo "   ServerAdmin $SERVER_ADMIN" >> $APACHE_CONF;
-echo "   DocumentRoot $DOCUMENT_ROOT/public" >> $APACHE_CONF;
+echo "   DocumentRoot $DOCUMENT_ROOT/$DOMAIN_NAME" >> $APACHE_CONF;
 echo "   ServerName $SERVER_NAME" >> $APACHE_CONF;
 echo "   ServerAlias $SERVER_ALIAS" >> $APACHE_CONF;
 echo "   SSLEngine on" >> $APACHE_CONF;
@@ -71,21 +78,43 @@ echo "   CustomLog /var/log/apache2/$DOMAIN_NAME.com-access_log common" >> $APAC
 echo "</Virtualhost>" >> $APACHE_CONF;
 cat $APACHE_CONF;
 
-sudo sed -i -e "s/export APACHE_RUN_USER=www-data/export APACHE_RUN_USER=$USER/g" /etc/apache2/envvars
-sudo sed -i -e "s/export APACHE_RUN_GROUP=www-data/export APACHE_RUN_GROUP=$USER/g" /etc/apache2/envvars
+
+if ! grep -q "export APACHE_RUN_USER=www-data" /etc/apache2/envvars; then
+    echo "apache run user not set, adding to envvars"
+    sudo echo "export APACHE_RUN_USER=www-data" >> /etc/apache2/envvars
+fi
+
+if ! grep -q "export APACHE_RUN_GROUP=www-data" /etc/apache2/envvars; then
+    echo "apache run group not set, adding to envvars"
+    sudo echo "export APACHE_RUN_GROUP=www-data" >> /etc/apache2/envvars
+fi
+
+#sudo sed -i -e "s/export APACHE_RUN_USER=www-data/export APACHE_RUN_USER=$USER/g" /etc/apache2/envvars
+#sudo sed -i -e "s/export APACHE_RUN_GROUP=www-data/export APACHE_RUN_GROUP=$USER/g" /etc/apache2/envvars
+
 
 # link the conf to sites-enabled
 cd /etc/apache2/sites-enabled
 sudo ln -s "../sites-available/$1.conf"
 sudo service apache2 restart
 
+sudo a2ensite "$1.conf"
+
+
+else
+
+  echo "$APACHE_CONF already exists"
+
+fi
+
+
 ## enable php7 
 sudo a2enmod php7.0
 
 sudo a2dissite 000-default.conf
-sudo a2ensite "$1.conf"
 sudo a2enmod rewrite
 sudo service apache2 restart
+
 
 apachectl configtest
 
@@ -94,7 +123,10 @@ sudo a2enmod ssl
 sudo /etc/init.d/apache2 restart
 
 
+# set up certs
 sudo mkdir -p /etc/ssl/crt/
+
+if [ ! -f "/etc/ssl/crt/$1.crt" ]; then
 cd /etc/ssl/crt
 
 #Required
@@ -146,8 +178,14 @@ echo "-----Below is your Key-----"
 echo "---------------------------"
 echo
 cat $domain.key
-
 echo
+
+else 
+echo "crt and key already exists"
+
+fi
+
+
 IP="$(ifconfig | grep "inet addr:" | grep -v 127.0.0.1 | sed -e 's/Bcast//' | cut -d: -f2)"
 #IP="$(ip -4 addr show eth1 | grep -oP "(?<=inet ).*(?=/)")"
 echo "Webserver running on: http://$IP"
@@ -155,4 +193,31 @@ echo "Webserver running on: http://$IP"
 sudo /etc/init.d/apache2 restart
 sudo update-rc.d apache2 defaults
 
-journalctl -xe
+
+# check status of fpm
+/etc/init.d/php7.0-fpm status
+
+# write fpm config file.
+cat << EOT >> /etc/php/7.0/fpm/pool.d/www-data.conf
+[www]
+user = www
+group = www-data
+listen = /var/run/php-fpm-www-data.sock
+listen.owner = www
+listen.group = www-data
+listen.mode = 0666
+pm = ondemand
+pm.max_children = 5
+pm.process_idle_timeout = 10s
+pm.max_requests = 200
+chdir = /
+EOT
+
+# restart php fpm
+/etc/init.d/php7.0-fpm restart
+
+#journalctl -xe
+echo "Now link a project to the location /var/www/html"
+echo
+echo "Example:"
+echo "sudo ln -sf /home/ubuntu/microweber/ /var/www/html/$DOMAIN_NAME"

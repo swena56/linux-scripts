@@ -24,6 +24,10 @@ fi
 
 mysql -u root -e "GRANT ALL PRIVILEGES ON *.* TO '$USER'@'localhost' IDENTIFIED BY '$MYSQL_ROOT_PASSWORD';"
 
+
+## need to add .my.cnf to user home directory
+## TODO
+
 echo "Done adding $USER"
 echo
 
