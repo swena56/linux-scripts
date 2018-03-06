@@ -21,7 +21,6 @@ if [[ $EUID -ne 0 ]]; then
    exit 1
 fi
 
-
   
 sudo apt-get install -y apache2 
 sudo /etc/init.d/apache2 start
@@ -78,19 +77,19 @@ echo "   CustomLog /var/log/apache2/$DOMAIN_NAME.com-access_log common" >> $APAC
 echo "</Virtualhost>" >> $APACHE_CONF;
 cat $APACHE_CONF;
 
+sudo sed -i -e "s/export APACHE_RUN_USER=www-data/export APACHE_RUN_USER=ubuntu/g" /etc/apache2/envvars
+sudo sed -i -e "s/export APACHE_RUN_GROUP=www-data/export APACHE_RUN_GROUP=ubuntu/g" /etc/apache2/envvars
 
-if ! grep -q "export APACHE_RUN_USER=www-data" /etc/apache2/envvars; then
+
+if ! grep -q "export APACHE_RUN_USER=ubuntu" /etc/apache2/envvars; then
     echo "apache run user not set, adding to envvars"
-    sudo echo "export APACHE_RUN_USER=www-data" >> /etc/apache2/envvars
+    sudo echo "export APACHE_RUN_USER=ubuntu" >> /etc/apache2/envvars
 fi
 
-if ! grep -q "export APACHE_RUN_GROUP=www-data" /etc/apache2/envvars; then
+if ! grep -q "export APACHE_RUN_GROUP=ubuntu" /etc/apache2/envvars; then
     echo "apache run group not set, adding to envvars"
-    sudo echo "export APACHE_RUN_GROUP=www-data" >> /etc/apache2/envvars
+    sudo echo "export APACHE_RUN_GROUP=ubuntu" >> /etc/apache2/envvars
 fi
-
-#sudo sed -i -e "s/export APACHE_RUN_USER=www-data/export APACHE_RUN_USER=$USER/g" /etc/apache2/envvars
-#sudo sed -i -e "s/export APACHE_RUN_GROUP=www-data/export APACHE_RUN_GROUP=$USER/g" /etc/apache2/envvars
 
 
 # link the conf to sites-enabled
