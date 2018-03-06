@@ -1,7 +1,5 @@
 #!/bin/bash
 
-
-
 ## check if root
 if [[ $EUID -ne 0 ]]; then
    echo "This script must be run as root"
@@ -11,6 +9,9 @@ fi
 
 IP="$(ifconfig | grep "inet addr:" | grep -v 127.0.0.1 | sed -e 's/Bcast//' | cut -d: -f2)"
 
+sudo apt-get update
+sudo apt-get -y upgrade
+
 # install PHP
 sudo apt-get install -y python-software-properties
 
@@ -19,6 +20,8 @@ sudo apt-get install -y apache2 libapache2-mod-php7.0 php7.0 php7.0-mysql php7.0
 
 # install misc
 sudo apt-get install -y screen ranger nano build-essential libssl-dev git curl screenfetch
+sudo apt-get install build-essential libssl-dev libffi-dev python3-dev
+
 
 # sudo apt-get upgrade -y
 if grep -q 'screenfetch' "$HOME/.bashrc"; then

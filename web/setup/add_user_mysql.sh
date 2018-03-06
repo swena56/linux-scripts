@@ -6,27 +6,28 @@ if [[ $EUID -ne 0 ]]; then
    exit 1
 fi
 
-
 USER=$1
 
 if [[ -z $USER ]]; then
-	echo "Need user"
+	echo "Need user, example"
+	echo "./add_user_mysql.sh ubuntu"
 	exit 1
-
 fi
 
 MYSQL_ROOT_PASSWORD="$(grep password /root/.my.cnf | grep password | cut -d '=' -f 2)"
 
 if [[ -z $MYSQL_ROOT_PASSWORD ]]; then
-	echo "Need user"
+	echo "Could not fetch root mysql password"
 	exit 1
 fi
 
+echo "Granting privileges for $USER"
 mysql -u root -e "GRANT ALL PRIVILEGES ON *.* TO '$USER'@'localhost' IDENTIFIED BY '$MYSQL_ROOT_PASSWORD';"
 
 
-## need to add .my.cnf to user home directory
-## TODO
+## add .my.cnf to user home directory
+cp /root/.my.cnf /home/$USER/
+chown $USER:$USER /home/$USER/.my.cnf
 
 echo "Done adding $USER"
 echo
