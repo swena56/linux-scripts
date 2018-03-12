@@ -23,7 +23,29 @@ fi
 
   
 sudo apt-get install -y apache2 
+
+## install certbot
+sudo add-apt-repository ppa:certbot/certbot
+sudo apt-get update
+sudo apt-get install python-certbot-apache -y
+
+a2enmod ssl
+sudo apt-get install --only-upgrade libssl1.0.0 openssl
+
+
+## generate cert
+#sudo certbot --apache -d "$1"
+
+
 sudo /etc/init.d/apache2 start
+
+## prevent poodle attack
+#nano /etc/apache2/mods-enabled/ssl.conf
+
+#SSLProtocol ALL -SSLv2 -SSLv3
+#SSLCipherSuite ECDHE-RSA-AES128-SHA:ECDHE-RSA-AES256-SHA:HIGH:+AES256:+CAMELLIA:+SHA1:+3DES:!aNULL:!DSS:!DH:-AES+SSLv3
+#SSLHonorCipherOrder On
+
 
 # verify existance of apache2
 apachectl -V
