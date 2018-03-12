@@ -1,0 +1,31 @@
+<html>
+	<body>
+		<div id="root"></div>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.4.2/react.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.4.2/react-dom.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/6.21.1/babel.min.js"></script>
+		<script type="text/babel">
+			function Welcome(props) {
+			  return <h1>Hello, {props.name}</h1>;
+			}
+
+			function App() {
+			  return (
+			    <div>
+			      <Welcome name="World" />
+			      <Welcome name="Sara" />
+			      <Welcome name="Cahal" />
+			      <Welcome name="Edite" />
+			    </div>
+			  );
+			}
+
+			ReactDOM.render(
+			  <App />,
+			  document.getElementById('root')
+			);
+		</script>
+
+
+	</body>
+</html>

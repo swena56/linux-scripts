@@ -1,0 +1,9 @@
+Vagrant.configure(2) do |config|
+
+  config.vm.box = "ubuntu/xenial64"
+  config.vm.hostname = "microweber.box"
+ 
+  # provision via shell scripting
+  config.vm.provision "shell", path: "../../server-setup/database/mysql/install.sh", run: "once"
+
+end

@@ -48,6 +48,7 @@ echo "<Virtualhost *:80>" > $APACHE_CONF;
 echo "   ServerAdmin $SERVER_ADMIN" >> $APACHE_CONF;
 echo "   DocumentRoot $DOCUMENT_ROOT/$DOMAIN_NAME" >> $APACHE_CONF;
 echo "   ServerName $SERVER_NAME" >> $APACHE_CONF;
+echo "   Redirect permanent / https://twinters-jewelry.ddns.net/" >> $APACHE_CONF;
 echo "   <directory \"$DOCUMENT_ROOT\">" >> $APACHE_CONF;
 echo "      AllowOverride All" >> $APACHE_CONF;
 echo "      Order allow,deny" >> $APACHE_CONF;
@@ -63,6 +64,7 @@ echo "   DocumentRoot $DOCUMENT_ROOT/$DOMAIN_NAME" >> $APACHE_CONF;
 echo "   ServerName $SERVER_NAME" >> $APACHE_CONF;
 echo "   ServerAlias $SERVER_ALIAS" >> $APACHE_CONF;
 echo "   SSLEngine on" >> $APACHE_CONF;
+echo "   SSLOptions +StrictRequire" >> $APACHE_CONF;
 echo "   SSLCertificateFile \"/etc/ssl/crt/$1.crt\"" >> $APACHE_CONF;
 echo "   SSLCertificateKeyFile \"/etc/ssl/crt/$1.key\"" >> $APACHE_CONF;
 #echo "   SSLCertificateChainFile /path/to/DigiCertCA" >> $APACHE_CONF;
@@ -71,8 +73,10 @@ echo "   <directory \"$DOCUMENT_ROOT\">" >> $APACHE_CONF;
 echo "      AllowOverride All" >> $APACHE_CONF;
 echo "      Order allow,deny" >> $APACHE_CONF;
 echo "      allow from all" >> $APACHE_CONF;
+echo "      SSLRequireSSL" >> $APACHE_CONF;
 echo "   </directory>" >> $APACHE_CONF;
 echo "   ErrorLog /var/log/apache2/$DOMAIN_NAME.com-error_log" >> $APACHE_CONF;
+echo "   TransferLog /var/log/apache2/$DOMAIN_NAME.com-transfer_log" >> $APACHE_CONF;
 echo "   CustomLog /var/log/apache2/$DOMAIN_NAME.com-access_log common" >> $APACHE_CONF;
 echo "</Virtualhost>" >> $APACHE_CONF;
 cat $APACHE_CONF;
@@ -112,6 +116,7 @@ sudo a2enmod php7.0
 
 sudo a2dissite 000-default.conf
 sudo a2enmod rewrite
+sudo a2enmod headers
 sudo service apache2 restart
 
 
