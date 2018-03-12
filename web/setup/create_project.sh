@@ -36,7 +36,9 @@ php artisan preset react
 php artisan migrate
 npm install && npm run dev
 
+
 # potential
+npm install react-router@2.8.1
 npm install babel-preset-react --save-dev
 npm install react react-dom --save-dev
 #npm install --save-dev jest babel-jest babel-preset-es2015 babel-preset-react react-test-renderer
