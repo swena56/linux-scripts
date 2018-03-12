@@ -63,7 +63,7 @@ sleep 5
 sudo /etc/init.d/apache2 restart
 
 echo "Starting NPM watch, check `screen -ls`"
-runuser -l $USER -c "screen -dmS watch bash -c 'echo Starting NPM Watch; sudo /etc/init.d/apache2 restart; cd $PROJECT_NAME; sleep 5; npm run watch; exec bash'"
+runuser -l $USER -c "screen -dmS watch bash -c 'echo Starting NPM Watch; cd $PROJECT_NAME; npm run watch; exec bash'"
 screen -ls
 echo
 echo

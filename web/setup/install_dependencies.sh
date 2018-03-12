@@ -20,7 +20,24 @@ sudo apt-get install -y apache2 libapache2-mod-php7.0 php7.0 php7.0-mysql php7.0
 
 # install misc
 sudo apt-get install -y screen ranger nano build-essential libssl-dev git curl screenfetch
-sudo apt-get install build-essential libssl-dev libffi-dev python3-dev
+sudo apt-get install build-essential libssl-dev libffi-dev python3-dev build-essential m4 ruby texinfo libbz2-dev libcurl4-openssl-dev libexpat-dev libncurses-dev zlib1g-dev libpng-dev
+
+# install nodejs and NPM
+# cd ~/
+# sudo curl -sL https://deb.nodesource.com/setup_7.x > install_npm.sh
+# sudo chmod 777 install_npm.sh
+# sudo ./install_npm.sh
+
+sudo apt-get install nodejs npm -y
+sudo npm cache clean -f
+sudo npm install npm@latest -g
+sudo n stable
+
+sudo ln -sf `which node` /usr/bin/nodejs
+sudo ln -sf /usr/local/bin/npm /usr/bin/npm
+
+npm -v
+nodejs -v
 
 
 # sudo apt-get upgrade -y
@@ -43,18 +60,6 @@ fi
 
 # verify composer version
 composer --version
-
-sudo apt-get install -y build-essential curl git m4 ruby texinfo libbz2-dev libcurl4-openssl-dev libexpat-dev libncurses-dev zlib1g-dev libpng-dev
-
-cd ~/
-sudo curl -sL https://deb.nodesource.com/setup_7.x > install_npm.sh
-sudo chmod 777 install_npm.sh
-sudo ./install_npm.sh
-
-sudo apt-get install -y nodejs
-
-node -v
-npm -v
 
 if ! hash mysql 2>/dev/null; then
   MYSQL_ROOT_PASSWORD=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | sed 1q)
