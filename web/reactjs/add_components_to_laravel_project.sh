@@ -31,7 +31,7 @@ echo  "$(pwd)/components/ ./components"
 #ln -sf "$(pwd)/components/" "$COMP_DIR/components"
 
 echo "Copying components directory to project dir"
-cp -R "$(pwd)/components/" "$COMP_DIR/components"
+cp -R "$(pwd)/base_source/src/components" "$COMP_DIR/components"
 
 ls -lrt $COMP_DIR/components
 
