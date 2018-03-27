@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { Panel } from 'react-bootstrap';
-//import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/css/bootstrap.css';
 import './App.css';
 
@@ -19,6 +18,8 @@ import {
 
 import Header from './components/Structure/Header';
 import Jumbotron from './components/containers/Jumbotron';
+import Pwr from './components/pwr/Pwr';
+import Template from './components/Template/Template';
 
 class App extends Component {
 constructor(props) {
@@ -38,20 +39,8 @@ constructor(props) {
     return (
       <div className="App">
       
-    
-
-   
-
-      <Jumbotron title="My Title">
-        <div>Test </div>
-      </Jumbotron>
-
-      <Panel>
-        <div> Test </div>
-      </Panel>
-
       <Navbar color="grey" light expand="md">
-          <NavbarBrand href="/">reactstrap</NavbarBrand>
+          <NavbarBrand href="/">PWR</NavbarBrand>
           <NavbarToggler onClick={this.toggle} />
           <Collapse isOpen={this.state.isOpen} navbar>
             <Nav className="ml-auto" navbar>
@@ -81,9 +70,10 @@ constructor(props) {
             </Nav>
           </Collapse>
         </Navbar>
-
+        <Pwr />
       <footer>
         <hr/>
+
         <p>@Andrew Swenson 2018</p>
       </footer>
 

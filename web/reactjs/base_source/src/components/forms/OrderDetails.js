@@ -10,9 +10,8 @@ import { Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import { Tooltip } from 'reactstrap';
 
 //import fa from 'fontawesome';
-//import FontAwesome  from 'react-fontawesome';
-var FontAwesome = require('react-fontawesome');
-
+import FontAwesome  from 'react-fontawesome';
+//var FontAwesome = require('react-fontawesome');
 
 import './OrderDetails.css';
 import ReactLoading from 'react-loading';
@@ -25,7 +24,8 @@ export default class OrderDetails extends React.Component {
           loading: false
         },
         data: {
-          order_id: null,
+          store_id: this.props.store_id,
+          order_id: this.props.order_id,
           price: null,
           description: null,
           address: null,
@@ -35,6 +35,7 @@ export default class OrderDetails extends React.Component {
       }
     };
 
+     this.getData = this.getData.bind(this);
      this.updateForm = this.updateForm.bind(this);
      this.saveData = this.saveData.bind(this);
   }
@@ -60,7 +61,7 @@ export default class OrderDetails extends React.Component {
   }
 
   componentDidMount() {
-      
+      this.getData();
   }
 
   openTab(url) {
@@ -95,7 +96,7 @@ export default class OrderDetails extends React.Component {
 
     var number = this.state.date.phone;
     var phoneRe = /^[2-9]\d{2}[2-9]\d{2}\d{4}$/;
-    var digits = p.replace(/\D/g, "");
+    var digits = phoneRe.replace(/\D/g, "");
 
     if( phoneRe.test(digits) && number != null ){
 
@@ -107,6 +108,20 @@ export default class OrderDetails extends React.Component {
   }
 
   getData(){
+
+      console.log("getting data");
+
+      //get-order-details?store_id=1953&order_id=346851
+      // fetch("get-order-details")
+      //   .then(response => {
+      //       return response.json();
+      //   })
+      //   .then(details => {
+      //       //Fetched product is stored in the state
+      //       this.setState({ details });
+      //   });
+
+
   }
 
   //post request to save data, include token
@@ -128,7 +143,7 @@ export default class OrderDetails extends React.Component {
             
           <InputGroup>
             <InputGroupAddon addonType="prepend">Order Id</InputGroupAddon>
-            <Input placeholder="XXXXXX" />
+            <Input placeholder="XXXXXX" value={this.state.store_id}/>
           </InputGroup>
           
           <br />
@@ -231,8 +246,6 @@ export default class OrderDetails extends React.Component {
                 Submit
               </Button>
             </div>
-            <a href="tel:5555555555"><img src="http://www.domain.com/files/phone-icon.jpg"/>Call</a>
-
 
           <Modal isOpen={this.state.state.loading} className="center-element">
             <ModalBody>

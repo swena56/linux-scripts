@@ -19,7 +19,6 @@ export default class Calender extends React.Component {
 			<div>
 				<InfiniteCalendar
 					displayOptions={{
-					    layout: 'landscape',
 					    showOverlay: false,
 					    shouldHeaderAnimate: true
 					  }}

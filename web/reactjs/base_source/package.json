@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@fortawesome/fontawesome-free-webfonts": "^1.0.4",
     "@kadira/storybook-addons": "^1.6.1",
     "@sambego/storybook-styles": "^1.0.0",
     "babel-eslint": "^8.2.2",
@@ -23,19 +24,23 @@
     "react-addons-css-transition-group": "15.6.2",
     "react-bootstrap-extended": "0.0.7",
     "react-dom": "^16.2.0",
+    "react-fa": "^5.0.0",
     "react-fontawesome": "1.6.1",
     "react-holder": "1.0.0",
     "react-image-gallery": "^0.8.7",
     "react-infinite-calendar": "^2.3.1",
     "react-list-view": "^1.0.0",
     "react-loading": "^1.0.3",
+    "react-native-progress": "^3.4.0",
     "react-native-web": "^0.5.2",
     "react-scripts": "1.1.1",
+    "react-split-pane": "^0.1.77",
     "react-styleguidist": "^6.2.7",
     "react-swipeable": "^4.2.0",
     "react-table": "^6.8.0",
     "reactable": "^0.14.1",
-    "reactstrap": "^5.0.0-beta.2"
+    "reactstrap": "^5.0.0-beta.2",
+    "reflux": "^6.4.1"
   },
   "scripts": {
     "start": "react-scripts start",
