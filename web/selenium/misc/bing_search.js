@@ -2,10 +2,30 @@ var webdriverio = require('webdriverio');
 
 var expect = require('chai').expect;
 var assert = require('assert');
-
+var client;
+var num_searches = 12;
 
 function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+async function check_points(){
+    await client.url('https://account.microsoft.com/rewards/pointsbreakdown');
+
+    var points = await client.execute(function(){
+        let result = document.querySelectorAll('p.pointsDetail.c-subheading-3.ng-binding');
+        console.log("Results found: ", result.length);
+        if( result && result.length > 0 && result[1].innerHTML){
+            return result[1].childNodes[0].innerHTML;
+        }
+        return false;
+    });
+    
+    if( points && points.value ){
+        return points.value;
+    }
+
+    return false;
 }
 
 //Mozilla/5.0 (Linux; Android 4.4; Nexus 5 Build/_BuildID_) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/30.0.0.0 Mobile Safari/537.36
@@ -13,10 +33,9 @@ function sleep(ms) {
 describe('Bing Rewards', function(){
 
     this.timeout(0);
-    var client;
+    
     var isLoggedIn = false;
-    let num_searches = 12;
-
+    
     before(function(){
             client = webdriverio.remote({ desiredCapabilities: 
                 {
@@ -49,37 +68,86 @@ describe('Bing Rewards', function(){
 
     it('Check if logged in',async function(){
 
-         isLoggedIn = await client.execute(function() {
-            let loginPic = document.querySelector('.msame_Header_picframe');
-            return (loginPic) ? true : false;
-         });
-        
-        assert.ok(isLoggedIn);
+        isLoggedIn = await client.execute(function() {
+            let loginPic = document.querySelector('#sharedshell-profile');
+            return (loginPic != null) ? true : false;
+        });
+
+        if( isLoggedIn.value == false ){
+            await client.click('.msame_Header_name.msame_TxtTrunc');
+            await sleep(30000);
+        }
+
+        assert.equal(isLoggedIn.value,true);
+    });
+    
+    //TODO
+    //Someones returns false
+    it('check number of points',  async function () {
+        let points = await check_points();
+
+        assert.ok(points);
+
+        if(points){
+            num_searches = 0;
+            assert(points,'Should be a number');
+        }
     });
 
-    
-    //http://www.chaijs.com/api/
-    // it('click 5 random news articles', function(){
-
-    //     //document.querySelector('#crs_itemLink_1').click()
-    //     client
-    //     .url('https://www.bing.com/')
-    //     ;//.click('#crs_itemLink_1');
-
-    //     client.executeAsync(function(){
-    //         await document.querySelector('#crs_itemLink_1').click();            
-    //     });
-    // });
-
     it('at least 3 check marks',async ()=>{
-        await client.execute(  function(){
-            let click_points = document.querySelectorAll('.ng-scope.c-call-to-action.c-glyph.f-lightweight');
 
-            if( click_points && click_points.length > 3 ){
-                console.log("Click rewards available", click_points);
-            }
+        await client.url('https://account.microsoft.com/rewards/');
+        
+        client.getTitle().then(function(title) {
+            assert.equal(title,'Microsoft account | Rewards Dashboard');
         });
-        //TODO does not fail
+
+        let results = await client.execute(  function(){
+            
+            //document.querySelectorAll('.ng-scope.c-call-to-action.c-glyph.f-lightweight');
+            function hasParentWithId(item,idToSearchFor){
+                //is a legitmite item TODO
+
+                var current_item = item;
+
+                while(current_item){
+                    if(current_item.id==idToSearchFor){
+                        console.log("found");
+                        return true;
+                        break;
+                    }
+                    if(current_item=="body"){
+                        break;
+                    }
+                    current_item = current_item.parentElement;
+                }
+
+                return false;
+            }
+
+            let click_points = document.querySelectorAll('.mee-icon.mee-icon-SkypeCircleCheck.ng-scope');
+
+            //if there are less than three elements, then automatic fail
+            if(click_points && click_points.length < 3){
+                return false;
+            }
+
+            //check them each
+            let count = 0;
+            for (var i = click_points.length - 1; i >= 0; i--) {
+                if( hasParentWithId(click_points[i],"daily-sets") ){
+                    count++;
+                }
+            }
+
+            if( count >= 2 ){
+                return true;
+            }
+
+            return false;
+        });
+
+        assert.equal(results.value,true);
     });
     
     var words = [];
@@ -87,6 +155,8 @@ describe('Bing Rewards', function(){
     it('Random bing search', async function(){
         
         if( isLoggedIn ){
+            console.log("number of searches ",num_searches);
+
             for (var i = 0; i < num_searches; i++) {
                 
                 await client
@@ -117,35 +187,14 @@ describe('Bing Rewards', function(){
         }
     });
     
-    it('at least 150 pc search points',async function(){
-        client.url('https://account.microsoft.com/rewards/pointsbreakdown');
-
-
-        var points = await client.execute(function(){
-            let result = document.querySelectorAll('p.pointsDetail.c-subheading-3.ng-binding');
-            console.log("Results found: ", result.length);
-            if( result && result.length > 0 && result[1].innerHTML){
-                return result[1].childNodes[0].innerHTML;
-            }
-            return false;
-        });
-        
-        if( points ){
-            //console.log(points.value, " out of 150");  
-
-            if( points.value == "150" ){
-                num_searches = 2;
-                assert.equal(points.value,'150');
-            }
-            
-        }
-
-        client.back();
-    });
-
-
     after(async function() {
         await sleep(10000);
         return client.end();
     });
 });
+
+/*
+inject = document.createElement('script');
+inject.src = "https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js";
+document.getElementsByTagName('head')[0].appendChild(inject);
+*/

@@ -19,7 +19,7 @@ async function getRandomPageFromUrl(url){
     }, arguments).then(function(result) {
         
     });
-    let title = client.getTitle();
+    let title = await client.getTitle();
     console.log(title);
 }
 
@@ -27,7 +27,7 @@ function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-describe('Bing Rewards', function(){
+describe('Study Links', function(){
 
     this.timeout(0);
 
@@ -66,10 +66,16 @@ describe('Bing Rewards', function(){
         getRandomPageFromUrl('https://javascript.info/');
     });
 
+    it('https://developer.mozilla.org/en-US/docs/Web/API/',function(){
+        getRandomPageFromUrl('https://developer.mozilla.org/en-US/docs/Web/API/');
+    });
+
     it('https://wiki.saucelabs.com/',function(){
         getRandomPageFromUrl('https://wiki.saucelabs.com/');
     });
 
+
+    // 
     // it('',function(){
     //     getRandomPageFromUrl('');
     // });
