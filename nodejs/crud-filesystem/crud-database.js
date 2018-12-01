@@ -33,7 +33,9 @@ module.exports = {
     read: (file) =>{
         fs.readFile(`${baseDir}/${file}.json`,'utf8',(err,data)=>{
             if(err) return err;
+
             console.log(data);
+            return data;
         });
     },
 
