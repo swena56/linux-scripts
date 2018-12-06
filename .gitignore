@@ -3,3 +3,4 @@ vagrant/**/.vagrant
 vagrant/**/*.log
 **/node_modules
 **/database.sqlite
+beef-xss/beef
