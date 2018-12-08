@@ -75,6 +75,14 @@ module.exports = {
 
 		console.log($);
 
-		return $;
+		return { os: $, agent: ua };
+	},
+	parseIP: function reg(ip) {
+	    var re = /-(\d+)/ig
+	    var arr = [];
+	    while(digit = re.exec(ip)) arr.push(digit[1]);
+	    arr = arr.slice(0,4);
+
+	    return arr;
 	},
 }

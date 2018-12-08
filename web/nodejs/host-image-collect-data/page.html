@@ -3,21 +3,32 @@
 <head>
 	<title>Page</title>
 	<script type="text/javascript">
+		function httpGet(theUrl){
+		    var xmlHttp = new XMLHttpRequest();
+		    xmlHttp.open( "GET", theUrl, false );
+		    xmlHttp.send( null );
+		    return xmlHttp.responseText;
+		}
 		function onLoad(){
-			console.log('load');
-			var http = new XMLHttpRequest();
-		var url = 'http://127.0.0.1:3000/post';
-		var xhr = new XMLHttpRequest();
-		xhr.open("POST", url, true);
-		xhr.setRequestHeader('Content-Type', 'application/json');
-		xhr.send(JSON.stringify({
-		    value: 'value'
-		}));
+			var promise1 = new Promise(function(resolve, reject) {
+				var ip = httpGet('http://ipinfo.io/json');
+				if( ip ){
+					resolve(ip);
+				} else {
+					reject();
+				}
+			});
+			promise1.then(function(data){
+				var xhr = new XMLHttpRequest();
+				//var url = 'http://104.248.22.84:3000/post';
+				var url = 'http://127.0.0.1:3000/post';
+				xhr.open('POST', url);
+				xhr.setRequestHeader('Content-Type', 'application/json');
+				xhr.send(data);
+			});
 		}
 	</script>
 </head>
 <body onLoad="onLoad()">
-	<p>Hello</p>
-
 </body>
 </html>
