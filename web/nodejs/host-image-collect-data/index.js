@@ -15,13 +15,32 @@ function reg(ip) {
     return arr;
 }
 
+app.use(function (req, res, next) {
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Methods', 'POST');
+    res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+    //res.setHeader('Access-Control-Allow-Credentials', true);
+    next();
+});
+
+app.post('/post', function(req, res) {
+	console.log('post');
+	console.log(req.headers);
+	let browser = util.detectBrowser(req);
+	console.log(browser,req.headers['user-agent']);
+	//res.send('Username: ');
+});
+
 app.get('/', function(req, res) {
 
 	var img = fs.readFileSync('./static/best-buy.png');
     res.writeHead(200, {'Content-Type': 'image/png' });
     res.end(img, 'binary');
 
-    request.get(`http://ipinfo.io/${reg(reg.ip).join('.')}`, {json: true}, (e, r) => {
+    let ip = util.getClientIp(req);
+    //console.log(ip);
+
+    request.get(`http://ipinfo.io/${reg(req.ip).join('.')}`, {json: true}, (e, r) => {
 			var data = r.body;
 			if( data ){
 				data['timestamp'] = (new Date).toISOString();

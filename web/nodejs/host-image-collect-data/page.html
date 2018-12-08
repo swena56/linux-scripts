@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Page</title>
+	<script type="text/javascript">
+		function onLoad(){
+			console.log('load');
+			var http = new XMLHttpRequest();
+		var url = 'http://127.0.0.1:3000/post';
+		var xhr = new XMLHttpRequest();
+		xhr.open("POST", url, true);
+		xhr.setRequestHeader('Content-Type', 'application/json');
+		xhr.send(JSON.stringify({
+		    value: 'value'
+		}));
+		}
+	</script>
+</head>
+<body onLoad="onLoad()">
+	<p>Hello</p>
+
+</body>
+</html>
