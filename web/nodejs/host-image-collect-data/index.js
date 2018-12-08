@@ -47,4 +47,11 @@ app.get('/', function(req, res) {
     res.sendFile(path.join(__dirname + '/page.html'));
 });
 
+app.get('/image', function(req, res) {
+	var img = fs.readFileSync('./static/cat.jpeg');
+    res.writeHead(200, {'Content-Type': 'image/jpg' });
+    res.end(img, 'binary');
+    //res.sendFile(path.join(__dirname + '/page.html'));
+});
+
 app.listen(port, () => console.log(`Listening on port ${port}!`))
