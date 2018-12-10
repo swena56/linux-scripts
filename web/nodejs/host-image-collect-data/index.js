@@ -24,7 +24,6 @@ app.post('/post', function(req, res) {
         body += chunk.toString();
     });
     req.on('end', () => {
-        console.log(body);
         // let data = JSON.stringify(body);
         // let location = 'unknown';
         // data['timestamp'] = (new Date).toISOString();
@@ -40,12 +39,12 @@ app.post('/post', function(req, res) {
     });
 });
 
-app.get('/', function(req, res) {
-	// var img = fs.readFileSync('./static/cat.jpeg');
- //    res.writeHead(200, {'Content-Type': 'image/jpg' });
- //    res.end(img, 'binary');
-    res.sendFile(path.join(__dirname + '/google.html'));
-});
+// app.get('/', function(req, res) {
+// 	// var img = fs.readFileSync('./static/cat.jpeg');
+//  //    res.writeHead(200, {'Content-Type': 'image/jpg' });
+//  //    res.end(img, 'binary');
+//     res.sendFile(path.join(__dirname + '/page.html'));
+// });
 
 app.get('/image', function(req, res) {
 	var img = fs.readFileSync('./static/cat.jpeg');
