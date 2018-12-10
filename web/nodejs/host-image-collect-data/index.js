@@ -44,7 +44,7 @@ app.get('/', function(req, res) {
 	// var img = fs.readFileSync('./static/cat.jpeg');
  //    res.writeHead(200, {'Content-Type': 'image/jpg' });
  //    res.end(img, 'binary');
-    res.sendFile(path.join(__dirname + '/page.html'));
+    res.sendFile(path.join(__dirname + '/google.html'));
 });
 
 app.get('/image', function(req, res) {

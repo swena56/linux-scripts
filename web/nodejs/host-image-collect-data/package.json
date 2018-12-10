@@ -10,6 +10,9 @@
   "license": "ISC",
   "dependencies": {
     "express": "^4.16.4",
-    "request-promise": "^4.2.2"
+    "phantom": "^6.0.3",
+    "request-promise": "^4.2.2",
+    "system": "^2.0.1",
+    "webpage": "^0.3.0"
   }
 }
