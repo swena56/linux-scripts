@@ -4,3 +4,8 @@ vagrant/**/*.log
 **/node_modules
 **/database.sqlite
 beef-xss/beef
+metasploit/result
+metasploit/certs/*
+*.jpg
+*.jpeg
+*.html
