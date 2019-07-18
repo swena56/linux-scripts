@@ -1,0 +1,33 @@
+{
+  "name": "nmap-mocha",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "postinstall": "selenium-standalone install",
+    "pretest": "rm -rf allure-results",
+    "test": "npm-run-all -r -p test:*",
+    "test:mocha": "sleep 1 && multi='progress=- mocha-allure-reporter=- mocha-junit-reporter=-' mocha",
+    "report": "allure generate allure-results --clean -o allure-report && allure open allure-report"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "allure-commandline": "^2.0.0",
+    "chai": "^4.0.2",
+    "mocha": "^3.3.0",
+    "mocha-allure-reporter": "^1.4.0",
+    "mocha-multi": "^0.11.0",
+    "npm-run-all": "^4.0.2",
+    "selenium-standalone": "^6.2.0",
+    "shelljs": "^0.8.3",
+    "xml2js": "^0.4.19"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.5.5",
+    "@babel/core": "^7.5.5",
+    "@babel/preset-env": "^7.5.5",
+    "@babel/register": "^7.5.5",
+    "mocha-junit-reporter": "^1.23.1"
+  }
+}
