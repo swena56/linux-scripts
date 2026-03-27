@@ -20,7 +20,7 @@
     "mocha-multi": "^0.11.0",
     "npm-run-all": "^4.0.2",
     "selenium-standalone": "^6.2.0",
-    "shelljs": "^0.8.3",
+    "shelljs": "^0.8.5",
     "xml2js": "^0.4.19"
   },
   "devDependencies": {
